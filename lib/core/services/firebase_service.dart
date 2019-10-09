@@ -19,15 +19,15 @@ class FirebaseService {
 
   String _baseUrl = "";
 
-  Future<void> getWordList() async {
+  Future<List<Word>> getWordList() async {
     final response = await http.get(_baseUrl + "words.json");
 
     final jsonData = json.decode(response.body);
     switch (response.statusCode) {
       case HttpStatus.ok:
         print(jsonData);
-        var list = Word.fromJsonList(jsonData);
-        return list;
+        var words = WordList.fromJsonList(jsonData).list;
+        return words;
       default:
         return Future.error(jsonData);
     }

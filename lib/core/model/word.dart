@@ -2,16 +2,11 @@ class Word {
   String image;
   String name;
 
-  List<Word> list;
   Word({this.image, this.name});
 
   Word.fromJson(Map<String, dynamic> json) {
     image = json['image'];
     name = json['name'];
-  }
-
-  Word.fromJsonList(List json) {
-    list = json.map((fields) => Word.fromJson(fields)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -22,10 +17,10 @@ class Word {
   }
 }
 
-// class WordList {
-//   List<Word> list;
+class WordList {
+  List<Word> list;
 
-//   List<Word> fromJsonList(List json) {
-//     return json.map((fields) => Word.fromJson(fields)).toList();
-//   }
-// }
+  WordList.fromJsonList(List json) {
+    list = json.map((fields) => Word.fromJson(fields)).toList();
+  }
+}
