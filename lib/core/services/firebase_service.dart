@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:study/core/model/word.dart';
 
 class FirebaseService {
@@ -30,6 +31,23 @@ class FirebaseService {
         return words;
       default:
         return Future.error(jsonData);
+    }
+  }
+
+  Future<bool> postWord({Word data, int index}) async {
+    data.image = "https://source.unsplash.com/1600x900/?${data.image},water";
+    var jsonData = json.encode(data.toJson());
+    final response =
+        await http.put(_baseUrl + "words/$index.json", body: jsonData);
+
+    switch (response.statusCode) {
+      case HttpStatus.ok:
+        Logger().i(response.body);
+        return true;
+      default:
+        Logger().e(response.body);
+        return false;
+      // return Future.error(jsonData);
     }
   }
 }

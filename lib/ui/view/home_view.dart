@@ -2,9 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:study/core/model/add_word.dart';
 import 'package:study/core/model/word.dart';
 import 'package:study/core/services/firebase_service.dart';
+
+import 'add_word.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -31,7 +32,7 @@ class _HomeViewState extends State<HomeView>
   Future<void> getServiceList() async {
     _list = await service.getWordList();
     setState(() {
-      isLoading = !isLoading;
+      isLoading = false;
     });
   }
 
@@ -46,7 +47,7 @@ class _HomeViewState extends State<HomeView>
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: _bottomAppBar,
         body: Center(
-          child: !isLoading
+          child: isLoading
               ? CircularProgressIndicator()
               : ListView.builder(
                   itemCount: items.length,
@@ -68,9 +69,8 @@ class _HomeViewState extends State<HomeView>
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WordAddView()));
+                      onTap: () async {
+                        await navigateAddPage();
                       },
                       title: Text("Kelime ekle"),
                       leading: Icon(Icons.send),
@@ -81,6 +81,14 @@ class _HomeViewState extends State<HomeView>
             ));
   }
 
+  Future<void> navigateAddPage() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => WordAddView(),
+        settings: RouteSettings(arguments: items.length)));
+
+    await getServiceList();
+  }
+
   void showBottomDialog() {
     showModalBottomSheet(
         builder: (context) => Container(
@@ -89,9 +97,9 @@ class _HomeViewState extends State<HomeView>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => WordAddView()));
+                    onTap: () async {
+                      Navigator.of(this.context).pop();
+                      await navigateAddPage();
                     },
                     title: Text("Kelime ekle"),
                     leading: Icon(Icons.send),
@@ -137,31 +145,32 @@ class _HomeViewState extends State<HomeView>
 
   Widget _card(Word item, int index) {
     return Dismissible(
-        key: Key("$index"),
-        secondaryBackground: Container(
-          width: 100,
-          child: Icon(Icons.radio),
+      key: Key("$index"),
+      secondaryBackground: Container(
+        width: 100,
+        child: Icon(Icons.radio),
+      ),
+      dismissThresholds: {
+        DismissDirection.endToStart: 100,
+        DismissDirection.startToEnd: 200,
+      },
+      dragStartBehavior: DragStartBehavior.down,
+      background: Container(
+        color: Colors.red,
+      ),
+      child: Card(
+        elevation: 10,
+        borderOnForeground: false,
+        shape: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blue),
         ),
-        dismissThresholds: {
-          DismissDirection.endToStart: 100,
-          DismissDirection.startToEnd: 200,
-        },
-        dragStartBehavior: DragStartBehavior.down,
-        background: Container(
-          color: Colors.red,
+        child: ListTile(
+          title: Text(item.name),
+          subtitle: Text("$index"),
+          trailing: Image.network(item.image),
         ),
-        child: Card(
-          elevation: 10,
-          borderOnForeground: false,
-          shape: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.blue),
-          ),
-          child: ListTile(
-            title: Text(item.name),
-            subtitle: Text("$index"),
-            trailing: Image.network(item.image),
-          ),
-        ));
+      ),
+    );
   }
 }
