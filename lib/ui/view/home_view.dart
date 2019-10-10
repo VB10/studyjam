@@ -37,20 +37,22 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar,
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add), onPressed: showBottomDialog),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: Center(
-        child: isLoading
-            ? CircularProgressIndicator()
-            : ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return _card(items[index], index);
-                },
-              ),
+    return SafeArea(
+          child: Scaffold(
+        appBar: _appBar,
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add), onPressed: showBottomDialog),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        body: Center(
+          child: isLoading
+              ? CircularProgressIndicator()
+              : ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return _card(items[index], index);
+                  },
+                ),
+        ),
       ),
     );
   }
