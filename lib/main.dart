@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study/ui/view/home_view.dart';
 import 'package:flutter/services.dart';
+import 'package:study/ui/view/splash_view.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,9 +12,13 @@ class MyApp extends StatelessWidget {
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
     return MaterialApp(
-      title: 'Material App',
-      home: HomeView(),
-      debugShowCheckedModeBanner: false, // Hiding debug flag
+      title: 'Flutter Study Jam',
+      home: SplashView(),
+      debugShowCheckedModeBanner: false,
+      routes: <String, WidgetBuilder>{
+        '/splash': (BuildContext context) => new SplashView(),
+        '/home': (BuildContext context) => new HomeView(),
+      }, // Hiding debug flag
     );
   }
 }

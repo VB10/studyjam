@@ -27,70 +27,70 @@ class _WordAddViewState extends State<WordAddView> {
   Widget build(BuildContext context) {
     lastIndex = ModalRoute.of(context).settings.arguments;
 
-    return SafeArea(
-          child: Scaffold(
-          key: _statekey,
-          appBar: AppBar(title: Text("Kelime Ekle"),),
-          body: Form(
-            key: _key,
-            autovalidate: true,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextFormField(
-                    controller: controllerWord,
-                    decoration: InputDecoration(
-                      helperText: "Buraya kelimeyi giriniz",
-                      labelText: "Kelime",
-                      enabledBorder: OutlineInputBorder(),
-                    ),
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Bu alan boş geçilemez";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    controller: controllerImage,
-                    decoration: InputDecoration(
-                      helperText: "Resim linki",
-                      labelText: "Resim",
-                      enabledBorder: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  RaisedButton(
-                    shape: StadiumBorder(),
-                    child: AnimatedContainer(
-                      width:isLoading ? 50 : 100,
-                      height: isLoading ? 50 :75,
-                      curve: Curves.easeInCubic,
-                      alignment: Alignment.center,
-                      duration: Duration(milliseconds: 100),
-                      child: isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : Text("Kaydet"),
-                    ),
-                    onPressed: isLoading ? null : saveWordData,
-                  )
-                ],
+    return Scaffold(
+    key: _statekey,
+    appBar: AppBar(title: Text("Kelime Ekle"),),
+    body: SafeArea(
+          child: Form(
+        key: _key,
+        autovalidate: true,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextFormField(
+                controller: controllerWord,
+                decoration: InputDecoration(
+                  helperText: "Buraya kelimeyi giriniz",
+                  labelText: "Kelime",
+                  enabledBorder: OutlineInputBorder(),
+                ),
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return "Bu alan boş geçilemez";
+                  }
+                  return null;
+                },
               ),
-            ),
-          )),
-    );
+              SizedBox(
+                height: 30,
+              ),
+              TextFormField(
+                controller: controllerImage,
+                decoration: InputDecoration(
+                  helperText: "Resim linki",
+                  labelText: "Resim",
+                  enabledBorder: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              RaisedButton(
+                shape: StadiumBorder(),
+                child: AnimatedContainer(
+                  width:isLoading ? 50 : 100,
+                  height: isLoading ? 50 :75,
+                  curve: Curves.easeInCubic,
+                  alignment: Alignment.center,
+                  duration: Duration(milliseconds: 100),
+                  child: isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Text("Kaydet"),
+                ),
+                onPressed: isLoading ? null : saveWordData,
+              )
+            ],
+          ),
+        ),
+      ),
+    ));
   }
 
   Future<void> saveWordData() async {
