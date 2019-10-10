@@ -5,10 +5,12 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     
     container:
-      image:  google/dart:latest
+      image:  cirrusci/flutter
+      
+   
     
     steps:
     - uses: actions/checkout@v1
