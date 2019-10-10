@@ -1,6 +1,7 @@
 class Word {
   String image;
   String name;
+  String key;
 
   Word({this.image, this.name});
 
@@ -18,9 +19,13 @@ class Word {
 }
 
 class WordList {
-  List<Word> list;
+  List<Word> list = [];
 
-  WordList.fromJsonList(List json) {
-    list = json.map((fields) => Word.fromJson(fields)).toList();
+  WordList.fromJsonList(Map json) {
+    json.forEach((key, value) {
+      var data = Word.fromJson(value);
+      data.key = key;
+      list.add(data);
+    });
   }
 }

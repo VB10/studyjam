@@ -98,7 +98,7 @@ class _WordAddViewState extends State<WordAddView> {
       setState(() {
         isLoading = true;
       });
-      bool isPostOkey = await service.postWord(data: word, index: lastIndex);
+      bool isPostOkey = await service.postWord(data: word);
       setState(() {
         isLoading = false;
       });

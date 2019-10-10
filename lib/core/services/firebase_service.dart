@@ -34,11 +34,25 @@ class FirebaseService {
     }
   }
 
-  Future<bool> postWord({Word data, int index}) async {
+  Future<bool> postWord({Word data}) async {
     data.image = "https://source.unsplash.com/1600x900/?${data.image},water";
     var jsonData = json.encode(data.toJson());
     final response =
-        await http.put(_baseUrl + "words/$index.json", body: jsonData);
+        await http.post(_baseUrl + "words.json", body: jsonData);
+
+    switch (response.statusCode) {
+      case HttpStatus.ok:
+        Logger().i(response.body);
+        return true;
+      default:
+        Logger().e(response.body);
+        return false;
+      // return Future.error(jsonData);
+    }
+  }
+
+  Future<bool> removeWord({String key}) async {
+    final response = await http.delete(_baseUrl + "words/$key.json");
 
     switch (response.statusCode) {
       case HttpStatus.ok:

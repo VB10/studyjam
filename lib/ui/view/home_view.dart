@@ -38,47 +38,22 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: _appBar,
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add), onPressed: showBottomDialog),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: _bottomAppBar,
-        body: Center(
-          child: isLoading
-              ? CircularProgressIndicator()
-              : ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return _card(items[index], index);
-                  },
-                ),
-        ),
+    return Scaffold(
+      appBar: _appBar,
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add), onPressed: showBottomDialog),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Center(
+        child: isLoading
+            ? CircularProgressIndicator()
+            : ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return _card(items[index], index);
+                },
+              ),
       ),
     );
-  }
-
-  void showAlertDialog() {
-    showDialog(
-        context: context,
-        builder: (context) => Dialog(
-              child: Card(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      onTap: () async {
-                        await navigateAddPage();
-                      },
-                      title: Text("Kelime ekle"),
-                      leading: Icon(Icons.send),
-                    )
-                  ],
-                ),
-              ),
-            ));
   }
 
   Future<void> navigateAddPage() async {
@@ -129,19 +104,19 @@ class _HomeViewState extends State<HomeView>
         ],
       );
 
-  Widget get _bottomAppBar => BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: TabBar(
-          tabs: <Widget>[
-            Tab(
-              child: Icon(Icons.ac_unit),
-            ),
-            Tab(
-              text: "s",
-            ),
-          ],
-        ),
-      );
+  // Widget get _bottomAppBar => BottomAppBar(
+  //       shape: CircularNotchedRectangle(),
+  //       child: TabBar(
+  //         tabs: <Widget>[
+  //           Tab(
+  //             child: Icon(Icons.ac_unit),
+  //           ),
+  //           Tab(
+  //             text: "s",
+  //           ),
+  //         ],
+  //       ),
+  //     );
 
   Widget _card(Word item, int index) {
     return Dismissible(
@@ -150,9 +125,8 @@ class _HomeViewState extends State<HomeView>
         width: 100,
         child: Icon(Icons.radio),
       ),
-      dismissThresholds: {
-        DismissDirection.endToStart: 100,
-        DismissDirection.startToEnd: 200,
+      onDismissed: (direction) async {
+        await removeData(item.key,index);
       },
       dragStartBehavior: DragStartBehavior.down,
       background: Container(
@@ -172,5 +146,10 @@ class _HomeViewState extends State<HomeView>
         ),
       ),
     );
+  }
+
+  Future<void> removeData(String key,int index) async {
+    await service.removeWord(key: key);
+    _list.removeAt(index);
   }
 }
