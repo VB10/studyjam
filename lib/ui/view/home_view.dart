@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:study/core/model/word.dart';
@@ -67,18 +66,46 @@ class _HomeViewState extends State<HomeView>
   void showBottomDialog() {
     showModalBottomSheet(
         builder: (context) => Container(
-              height: 100,
+              height: 75,
+              color: Colors.blue,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ListTile(
+                  /* ListTile(
                     onTap: () async {
                       Navigator.of(this.context).pop();
                       await navigateAddPage();
                     },
-                    title: Text("Kelime ekle"),
-                    leading: Icon(Icons.send),
-                  )
+                    title: Text("Kelime ekle", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                    leading: Icon(Icons.send, color: Colors.white,),
+                  ), */
+                  Expanded(
+                    child: FlatButton(
+                        onPressed: () async {
+                          Navigator.of(this.context).pop();
+                          await navigateAddPage();
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.send,
+                              color: Colors.white,
+                              size: 36,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Kelime ekle",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        )),
+                  ),
                 ],
               ),
             ),
@@ -86,7 +113,11 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget get _appBar => AppBar(
-        title: Text("Flutter Turkiye"),
+        title: Text(
+          "Flutter Türkiye 🇹🇷",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
         actions: <Widget>[
           IconButton(
             icon: AnimatedIcon(
@@ -126,7 +157,7 @@ class _HomeViewState extends State<HomeView>
         child: Icon(Icons.radio),
       ),
       onDismissed: (direction) async {
-        await removeData(item.key,index);
+        await removeData(item.key, index);
       },
       dragStartBehavior: DragStartBehavior.down,
       background: Container(
@@ -148,7 +179,7 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
-  Future<void> removeData(String key,int index) async {
+  Future<void> removeData(String key, int index) async {
     await service.removeWord(key: key);
     _list.removeAt(index);
   }

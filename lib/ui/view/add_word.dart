@@ -29,7 +29,7 @@ class _WordAddViewState extends State<WordAddView> {
 
     return Scaffold(
         key: _statekey,
-        appBar: AppBar(),
+        appBar: AppBar(title: Text("Kelime Ekle"),),
         body: Form(
           key: _key,
           autovalidate: true,
@@ -41,13 +41,13 @@ class _WordAddViewState extends State<WordAddView> {
                 TextFormField(
                   controller: controllerWord,
                   decoration: InputDecoration(
-                    helperText: "Add",
-                    labelText: "Word",
+                    helperText: "Buraya kelimeyi giriniz",
+                    labelText: "Kelime",
                     enabledBorder: OutlineInputBorder(),
                   ),
                   validator: (val) {
                     if (val.isEmpty) {
-                      return "Bu alan bos gecilemez";
+                      return "Bu alan boş geçilemez";
                     }
                     return null;
                   },
@@ -58,8 +58,8 @@ class _WordAddViewState extends State<WordAddView> {
                 TextFormField(
                   controller: controllerImage,
                   decoration: InputDecoration(
-                    helperText: "Add",
-                    labelText: "Image",
+                    helperText: "Resim linki",
+                    labelText: "Resim",
                     enabledBorder: OutlineInputBorder(),
                   ),
                 ),
@@ -81,7 +81,7 @@ class _WordAddViewState extends State<WordAddView> {
                                   AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        : Text("Send data"),
+                        : Text("Kaydet"),
                   ),
                   onPressed: isLoading ? null : saveWordData,
                 )
@@ -106,7 +106,7 @@ class _WordAddViewState extends State<WordAddView> {
         Navigator.of(context).pop();
       } else {
         _statekey.currentState.showSnackBar(SnackBar(
-          content: Text("Bir hata ile karsilasildi."),
+          content: Text("Olamaz :( Bir hata oluştu."),
         ));
       }
     }
